@@ -5,13 +5,12 @@ function formatMsg(messages) {
   if (messages.length === 0) return {};
   messages.forEach((message) => {
     result.push({
-      name: message.name,
+      username: message.username,
       message: message.message,
       date: formatDistance(new Date(message.date), new Date(), { addSuffix: true }),
     });
   });
-  result.sort();
-  return result;
+  return result.reverse();
 }
 
 module.exports = { formatMsg };
