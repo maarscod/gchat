@@ -6,7 +6,7 @@ if (isLocalEnv) {
 const express = require("express");
 const mongoose = require("mongoose");
 
-const indexRouter = require("./route/index");
+const indexRouter = require("./route/message");
 
 const app = express();
 
