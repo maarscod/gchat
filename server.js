@@ -34,8 +34,7 @@ app.listen(process.env.PORT || 3000, () => {
 //
 function authenticator(req, res, next) {
   const SECRET = process.env.SECRET;
-  if (req.body.secret === SECRET) return next();
-
+  if (req.query.secret === SECRET) return next();
   res.send(
     json2lua({
       result: {
