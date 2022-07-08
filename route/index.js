@@ -21,11 +21,10 @@ router
     );
   })
   .post(async (req, res) => {
-    const { username, message } = req.body;
     try {
       await new Message({
-        username,
-        message,
+        username: req.body.username,
+        message: req.body.message,
       }).save();
       res.status(200).send(
         json2lua({
@@ -41,11 +40,22 @@ router
         json2lua({
           result: {
             success: false,
-            message: error?.message || "Message not sent",
+            message: error?.message || error || "Failed to send message",
           },
         })
       );
     }
   });
+
+router.all("*", (req, res) => {
+  res.send(
+    json2lua({
+      result: {
+        success: false,
+        message: "(404) Invalid endpoint",
+      },
+    })
+  );
+});
 
 module.exports = router;
