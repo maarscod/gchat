@@ -18,7 +18,7 @@ if (isLocalEnv) {
 }
 
 // Rounting
-app.use("/", auth, indexRouter);
+app.use("/", authenticator, indexRouter);
 
 // Database
 mongoose.connect(process.env.DATABASE_URL);
@@ -32,7 +32,7 @@ app.listen(process.env.PORT || 3000, () => {
 });
 
 //
-function auth(req, res, next) {
+function authenticator(req, res, next) {
   const SECRET = process.env.SECRET;
   if (req.body.secret === SECRET) return next();
 
