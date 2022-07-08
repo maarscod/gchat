@@ -3,6 +3,7 @@ if (isLocalEnv) {
   require("dotenv").config();
 }
 
+const { format: json2lua } = require("lua-json");
 const express = require("express");
 const mongoose = require("mongoose");
 
@@ -17,7 +18,7 @@ if (isLocalEnv) {
 }
 
 // Rounting
-app.use("/", indexRouter);
+app.use("/", auth, indexRouter);
 
 // Database
 mongoose.connect(process.env.DATABASE_URL);
@@ -29,3 +30,18 @@ db.once("open", () => console.log("connected to mongodb"));
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server is running on port 3000");
 });
+
+//
+function auth(req, res, next) {
+  const SECRET = process.env.SECRET;
+  if (req.body.secret === SECRET) return next();
+
+  res.send(
+    json2lua({
+      result: {
+        success: false,
+        message: "Authentication failed",
+      },
+    })
+  );
+}
